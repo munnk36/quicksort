@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+
+<html>
+	<head>
+		<script src="https://code.jquery.com/jquery-3.2.0.min.js"></script>
+		<title>sup</title>
+	</head>
+	<body>
+		<p>
+		Enter the amount of numbers you would like to use.
+		</p>
+		<input type="number" id="max">
+		<button type="submit" id="shuffle">SHUFFLE</button>
+		<button type="submit" id="sort">SORT</button>
+		<div>
+			Initialized:
+			<span id="begin" style="color: red;">
+			</span>
+		</div>
+		<div>
+			Shuffled:
+			<span id="unsorted" style="color: orange;">
+			</span>
+		</div>
+		<div>
+			Sorted:
+			<span id="sorted" style="color: green;">
+			</span>
+		</div>
+		<script>
+			var uniqueRandoms = [];
+			$("#shuffle").click(function(){
+				uniqueRandoms = [];
+				var numRandoms = $("#max").val();
+				for (var i = 0; i < numRandoms; i++) {
+    				uniqueRandoms.push(i);
+				}
+				$("#begin").html(uniqueRandoms);
+				var m = uniqueRandoms.length, t, i;
+				while (m) {
+					i = Math.floor(Math.random() * m--);
+					t = uniqueRandoms[m];
+					uniqueRandoms[m] = uniqueRandoms[i];
+					uniqueRandoms[i] = t;
+				}
+				$("#unsorted").html(uniqueRandoms);
+			});
+
+			$("#sort").click(function(){
+				var sorted = quicksort(uniqueRandoms);
+				$("#sorted").html(sorted);
+			});
+
+			function quicksort(inlist){
+				if(inlist.length <= 1){
+					return inlist;
+				}
+				var randomindex = (Math.floor(Math.random() * inlist.length));
+				var pivot = inlist[randomindex];
+				var under = [];
+				var over = [];
+				for (var x = 0; x < inlist.length; ++x){
+					if(x === randomindex){
+						continue;
+					}
+					if (inlist[x] <= pivot){
+						under.push(inlist[x]);
+					} else {
+						over.push(inlist[x]);
+					}
+				}
+				under = quicksort(under);
+				over = quicksort(over);
+				return under.concat([pivot].concat(over));
+			}
+		</script>
+	</body>
+</html>
